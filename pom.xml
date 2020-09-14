@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.versatiletester</groupId>
+  <artifactId>cucumber-jvm-spring-boot</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+
+  <name>Cucumber JVM Spring Boot Framework Demo</name>
+
+  <properties>
+    <project.name>Cucumber JVM Spring Boot</project.name>
+    <browser>chrome</browser>
+    <environment>sandpit</environment>
+
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <spring.version>5.1.8.RELEASE</spring.version>
+    <cucumber.version>4.7.2</cucumber.version>
+    <cucumber.reporting.version>4.9.0</cucumber.reporting.version>
+    <cucumber-spring.version>4.2.1</cucumber-spring.version>
+    <spring.version>5.1.4.RELEASE</spring.version>
+    <selenium.version>3.14.0</selenium.version>
+    <surefire.version>2.22.2</surefire.version>
+    <junit.version>4.12</junit.version>
+    <log4j.version>1.2.17</log4j.version>
+    <java.version>1.8</java.version>
+    <maven.compiler.plugin.version>3.7.0</maven.compiler.plugin.version>
+    <maven.dependency.plugin.version>3.1.1</maven.dependency.plugin.version>
+
+    <code.source.dir>src${file.separator}main${file.separator}java</code.source.dir>
+    <code.resources.dir>src${file.separator}main${file.separator}resources</code.resources.dir>
+    <features.dir>${code.resources.dir}${file.separator}features${file.separator}</features.dir>
+    <cucumber.output.json.dir>${project.build.directory}${file.separator}cucumber-parallel</cucumber.output.json.dir>
+    <report.output.dir>${project.build.directory}${file.separator}reports</report.output.dir>
+  </properties>
+
+  <dependencies>
+    <!-- Cukes Dependencies -->
+    <dependency>
+      <groupId>io.cucumber</groupId>
+      <artifactId>cucumber-java</artifactId>
+      <version>${cucumber.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.cucumber</groupId>
+      <artifactId>cucumber-junit</artifactId>
+      <version>${cucumber.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.cucumber</groupId>
+      <artifactId>cucumber-spring</artifactId>
+      <version>${cucumber-spring.version}</version>
+    </dependency>
+
+    <!-- Selenium Dependencies -->
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-remote-driver</artifactId>
+      <version>${selenium.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-chrome-driver</artifactId>
+      <version>${selenium.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-firefox-driver</artifactId>
+      <version>${selenium.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-ie-driver</artifactId>
+      <version>${selenium.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-support</artifactId>
+      <version>${selenium.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.github.bonigarcia</groupId>
+      <artifactId>webdrivermanager</artifactId>
+      <version>3.0.0</version>
+    </dependency>
+
+    <!-- Spring Dependencies -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+
+    <!-- Misc Dependencies (Junit, Logging, HTTP)-->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>${log4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+      <version>1.7.30</version>
+    </dependency>
+
+    <!-- Plugin Dependencies -->
+    <dependency>
+      <groupId>net.masterthought</groupId>
+      <artifactId>maven-cucumber-reporting</artifactId>
+      <version>${cucumber.reporting.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-surefire-plugin</artifactId>
+      <version>${surefire.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-java</artifactId>
+      <version>${selenium.version}</version>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <!-- Possibly the best HTML cucumber reporting tool which supports parallel running. -->
+        <groupId>net.masterthought</groupId>
+        <artifactId>maven-cucumber-reporting</artifactId>
+        <version>${cucumber.reporting.version}</version>
+        <executions>
+          <execution>
+            <id>execution</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <projectName>${project.name}</projectName>
+              <outputDirectory>${report.output.dir}</outputDirectory>
+              <inputDirectory>${report.output.dir}${file.separator}json</inputDirectory>
+              <jsonFiles>
+                <param>**/*.json</param>
+              </jsonFiles>
+              <!-- If you get an error from the following line, ignore it. It's an Intellij IDE defect. -->
+              <parallelTesting>true</parallelTesting>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${maven.compiler.plugin.version}</version>
+        <configuration>
+          <encoding>${project.build.sourceEncoding}</encoding>
+          <source>${java.version}</source>
+          <target>${java.version}</target>
+        </configuration>
+      </plugin>
+
+      <!-- Remove the jar generation entirely - DevOps fix. -->
+      <plugin>
+        <artifactId>maven-jar-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>default-jar</id>
+            <!--suppress MavenModelInspection -->
+            <phase>never</phase>
+            <configuration>
+              <finalName>unwanted</finalName>
+              <classifier>unwanted</classifier>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-install-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>default-jar</id>
+            <!--suppress MavenModelInspection -->
+            <phase>never</phase>
+            <configuration>
+              <finalName>unwanted</finalName>
+              <classifier>unwanted</classifier>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Download all dependencies in the beginning maven lifecycles - DevOps fix. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>${maven.dependency.plugin.version}</version>
+        <executions>
+          <execution>
+            <id>go-offline</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>go-offline</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+
+  </build>
+
+  <profiles>
+
+    <profile>
+      <id>local</id>
+      <properties>
+        <parallel.tests>5</parallel.tests>
+      </properties>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>${surefire.version}</version>
+            <configuration>
+              <testFailureIgnore>true</testFailureIgnore>
+              <parallel>all</parallel>
+              <threadCount>${parallel.tests}</threadCount>
+              <perCoreThreadCount>false</perCoreThreadCount>
+              <testClassesDirectory>target/classes</testClassesDirectory>
+              <systemPropertyVariables>
+                <maven.profile>local</maven.profile>
+                <browser>${browser}</browser>
+                <environment>${environment}</environment>
+                <project.name>${project.name}</project.name>
+                <resources.dir>${code.resources.dir}</resources.dir>
+              </systemPropertyVariables>
+              <includes>
+                <include>RunCukesTest</include>
+              </includes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>bstack</id>
+      <properties>
+        <parallel.tests>5</parallel.tests>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>${surefire.version}</version>
+            <configuration>
+              <testFailureIgnore>true</testFailureIgnore>
+              <parallel>all</parallel>
+              <threadCount>${parallel.tests}</threadCount>
+              <perCoreThreadCount>false</perCoreThreadCount>
+              <testClassesDirectory>target/classes</testClassesDirectory>
+              <systemPropertyVariables>
+                <maven.profile>bstack</maven.profile>
+                <browser>${browser}</browser>
+                <environment>${environment}</environment>
+                <project.name>${project.name}</project.name>
+                <resources.dir>${code.resources.dir}</resources.dir>
+              </systemPropertyVariables>
+              <includes>
+                <include>RunCukesTest</include>
+              </includes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>grid</id>
+      <properties>
+        <parallel.tests>4</parallel.tests>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>${surefire.version}</version>
+            <configuration>
+              <testFailureIgnore>true</testFailureIgnore>
+              <parallel>all</parallel>
+              <threadCount>${parallel.tests}</threadCount>
+              <perCoreThreadCount>false</perCoreThreadCount>
+              <testClassesDirectory>target/classes</testClassesDirectory>
+              <systemPropertyVariables>
+                <maven.profile>grid</maven.profile>
+                <browser>${browser}</browser>
+                <environment>${environment}</environment>
+                <project.name>${project.name}</project.name>
+                <resources.dir>${code.resources.dir}</resources.dir>
+              </systemPropertyVariables>
+              <includes>
+                <include>RunCukesTest</include>
+              </includes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+</project>
